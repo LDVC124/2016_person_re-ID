@@ -437,7 +437,7 @@ flags.mexcu= horzcat({'-f' mex_cuda_config(root)}, ...
 
 % mex: link
 flags.mexlink = horzcat(flags.cc, flags.link, ...
-                        {'-largeArrayDims'}, ...
+                        {'-lmwblas'}, ...
                         {['LDFLAGS=$LDFLAGS ', strjoin(flags.linkpass)]}, ...
                         {['LINKLIBS=', strjoin(flags.linklibs), ' $LINKLIBS']}) ;
 
@@ -541,6 +541,7 @@ if status, error('Command %s failed.', nvcc_cmd); end;
 
 % --------------------------------------------------------------------
 function mex_link(opts, objs, mex_dir, mex_flags)
+mex_flags=['-R2018a',mex_flags(1:end-1)];
 % --------------------------------------------------------------------
 mopts = {'-outdir', mex_dir, mex_flags{:}, objs{:}} ;
 opts.verbose && fprintf('%s: MEX LINK: %s\n', mfilename, strjoin(mopts)) ;

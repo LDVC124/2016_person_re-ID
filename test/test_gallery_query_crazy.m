@@ -13,7 +13,7 @@ net.move('gpu') ;
 net.conserveMemory = true;
 im_mean = net.meta(1).normalization.averageImage;
 %im_mean = imresize(im_mean,[224,224]);
-p = dir('/data/uts511/reid/market1501/bounding_box_test/*jpg');
+p = dir('../dataset/uts511/reid/market1501/bounding_box_test/*jpg');
 ff = [];
 %------------------------------
 for i = 1:200:numel(p)
@@ -21,7 +21,7 @@ for i = 1:200:numel(p)
     oim = [];
     str=[];
     for j=1:min(200,numel(p)-i+1)
-        str = strcat('/data/uts511/reid/market1501/bounding_box_test/',p(i+j-1).name);
+        str = strcat('../dataset/uts511/reid/market1501/bounding_box_test/',p(i+j-1).name);
         imt = imresize(imread(str),[256,256]);
         oim = cat(4,oim,imt);
     end
@@ -42,14 +42,14 @@ save('../test/resnet_gallery.mat','ff','-v7.3');
 %}
 
 %---------query
-p = dir('/data/uts511/reid/market1501/query/*jpg');
+p = dir('../dataset/uts511/reid/market1501/query/*jpg');
 ff = [];
 for i = 1:200:numel(p)
     disp(i);
     oim = [];
     str=[];
     for j=1:min(200,numel(p)-i+1)
-        str = strcat('/data/uts511/reid/market1501/query/',p(i+j-1).name);
+        str = strcat('../dataset/uts511/reid/market1501/query/',p(i+j-1).name);
         imt = imresize(imread(str),[256,256]);
         oim = cat(4,oim,imt);
     end

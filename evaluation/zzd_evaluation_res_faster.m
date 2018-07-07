@@ -15,8 +15,8 @@ rank_size = 2000;
 %im_mean = imresize(im_mean,[224,224]);
 
 %% add necessary paths
-query_dir = '/data/uts511/reid/market1501/query/';% query directory
-test_dir = '/data/uts511/reid/market1501/bounding_box_test/';% database directory
+query_dir = '../dataset/uts511/reid/market1501/query/';% query directory
+test_dir = '../dataset/uts511/reid/market1501/bounding_box_test/';% database directory
 
 %% calculate query features
 Hist_query = importdata('../test/resnet_query.mat')';
