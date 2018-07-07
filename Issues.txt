@@ -1,0 +1,12 @@
+源代码实现错误
+
+    1. 源码不支持7.0及以上版本的CUDNN加速。
+	解决：禁用CUDNN加速。
+
+    2. 使用matlab r2018a编译生成matlab mex，mexlink报错：使用 matlab r2018a 编译并链接到 matlab r2017a.
+	解决：找到 mex/vl_compilenn.m 文件中的function mex_link, 添加语句：
+          mex_flags=['-R2018a',mex_flags(1:end-1)]; 指定链接到matlab r2018a
+
+    3. R2018不支持largeArrayDims
+    解决：修改 vl_compilenn 中的 flags.mexlink = horzcat(..., {'-largeArrayDims'}, ...); 
+	      为 flags.mexlink = horzcat(..., {'-lmwblas'}, ...);
