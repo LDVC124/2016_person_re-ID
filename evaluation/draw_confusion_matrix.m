@@ -26,6 +26,7 @@ name_class{3} = 'Cam3';
 name_class{4} = 'Cam4';
 name_class{5} = 'Cam5';
 name_class{6} = 'Cam6';
+figure('Name','mAP'); 
 draw_cm(ap_mat,name_class,num_class);
 
 r1_mat = r1_mat./count2;
@@ -35,4 +36,5 @@ name_class{3} = 'Cam3';
 name_class{4} = 'Cam4';
 name_class{5} = 'Cam5';
 name_class{6} = 'Cam6';
+figure('Name','rank-1'); 
 draw_cm(r1_mat,name_class,num_class);

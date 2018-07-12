@@ -16,9 +16,9 @@ im_mean = net.meta.normalization.averageImage;
 %im_mean = imresize(im_mean,[224,224]);
 
 %% add necessary paths
-query_dir = '/data/uts511/reid/market1501/query/';% query directory
-test_dir = '/data/uts511/reid/market1501/bounding_box_test/';% database directory
-gt_dir = '/data/uts511/reid/market1501/gt_bbox/'; % directory of hand-drawn bounding boxes
+query_dir = '../dataset/uts511/reid/market1501/query/';% query directory
+test_dir = '../dataset/uts511/reid/market1501/bounding_box_test/';% database directory
+gt_dir = '../dataset/uts511/reid/market1501/gt_bbox/'; % directory of hand-drawn bounding boxes
 
 %% calculate query features
 Hist_query = importdata('../test/resnet_query.mat')';
@@ -29,6 +29,7 @@ Hist_test = importdata('../test/resnet_gallery.mat')';
 nTest = size(Hist_test, 2);
 
 %% calculate the ID and camera for database images
+mkdir('./data')
 test_files = dir([test_dir '*.jpg']);
 testID = zeros(length(test_files), 1);
 testCAM = zeros(length(test_files), 1);
@@ -73,7 +74,7 @@ else
 end
 
 %% calculate features for multiple queries
-if ~exist('Hist_query_max.mat');
+if ~exist('data/Hist_query_max.mat');
     Hist_max = []; % multiple queries by max pooling
     Hist_avg = []; % multiple queries by avg pooling
     for n = 1:length(query_files)
@@ -97,11 +98,11 @@ if ~exist('Hist_query_max.mat');
         Hist_max(:, n) = max(tmp_feature, [], 2);
         Hist_avg(:, n) = mean(tmp_feature, 2);
     end
-    save('Hist_query_max.mat', 'Hist_max');
-    save('Hist_query_avg.mat', 'Hist_avg');
+    save('data/Hist_query_max.mat', 'Hist_max');
+    save('data/Hist_query_avg.mat', 'Hist_avg');
 else
-    Hist_max = importdata('Hist_query_max.mat');
-    Hist_avg = importdata('Hist_query_avg.mat');
+    Hist_max = importdata('data/Hist_query_max.mat');
+    Hist_avg = importdata('data/Hist_query_avg.mat');
 end
 % another normalization
 sum_val = sqrt(sum(Hist_max.^2));
@@ -198,7 +199,7 @@ CMC_max = mean(CMC_max);
 CMC_avg = mean(CMC_avg);
 CMC = mean(CMC);
 %% print result
-fprintf('single query:                                    mAP = %f, r1 precision = %f\r\n', mean(ap), CMC(1));
+fprintf('single query:                                   mAP = %f, r1 precision = %f\r\n', mean(ap), CMC(1));
 fprintf('multiple queries with avg pooling:              mAP = %f, r1 precision = %f\r\n', mean(ap_avg), CMC_avg(1));
 fprintf('multiple queries with max pooling:              mAP = %f, r1 precision = %f\r\n', mean(ap_max), CMC_max(1));
 fprintf('multiple queries with max pooling + re-ranking: mAP = %f, r1 precision = %f\r\n', mean(ap_max_rerank), CMC_max_rerank(1));
@@ -207,7 +208,7 @@ fprintf('multiple queries with max pooling + re-ranking: mAP = %f, r1 precision 
 fprintf('average of confusion matrix with single query:  mAP = %f, r1 precision = %f\r\n', (sum(ap_CM(:))-sum(diag(ap_CM)))/30, (sum(r1_CM(:))-sum(diag(r1_CM)))/30);
 
 %% plot CMC curves
-figure;
+figure('Name','CMC curves'); 
 s = 50;
 CMC_curve = [CMC_max_rerank; CMC_max; CMC_avg; CMC ];
 plot(1:s, CMC_curve(:, 1:s));

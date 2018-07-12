@@ -10,3 +10,11 @@
     3. R2018不支持largeArrayDims
     解决：修改 vl_compilenn 中的 flags.mexlink = horzcat(..., {'-largeArrayDims'}, ...); 
 	      为 flags.mexlink = horzcat(..., {'-lmwblas'}, ...);
+		  
+    4. 无法运行zzd_evaluation_res_fast文件得出多查询情况下的识别准确度。报错：数组溢出。
+	解决：修改Hist_query_xxx.mat文件的存储路径，将其设为当前文件夹下的data文件夹，并进行读取。
+	
+	5. 绘制混淆矩阵图像报错：未定义函数draw_cm。
+	解决：下载一个matlab图形绘制插件，复制其中绘制混淆函数的代码到当前文件夹下。
+	报错：未找到具有匹配签名的构造函数	handle.listener。
+	解决：将handle.listener修改为addlistener并将事件 'PropertyPostSet'改为'PostSet'（matlab版本2014b及以后）。
